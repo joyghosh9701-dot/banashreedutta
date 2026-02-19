@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banashree Dutta | Elite Developer Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<style>
+    :root {
+        --primary: #ffd700; /* Gold */
+        --accent: #ff8c00; /* Dark Orange */
+        --bg: #050505;
+        --card-bg: rgba(20, 20, 20, 0.85);
+        --text: #e0e0e0;
+        --font-head: 'Orbitron', sans-serif;
+        --font-body: 'Rajdhani', sans-serif;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: var(--font-body);
+        background-color: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+    }
+
+    /* CANVAS BACKGROUND */
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+    /* NAVIGATION */
+    nav {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 1000px;
+        background: rgba(255, 215, 0, 0.05);
+        backdrop-filter: blur(15px);
+        padding: 15px 30px;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+        font-family: var(--font-head);
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 20px;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: #fff;
+        font-weight: 500;
+        font-size: 16px;
+        transition: 0.3s;
+        text-transform: uppercase;
+    }
+
+    .nav-links a:hover {
+        color: var(--primary);
+        text-shadow: 0 0 10px var(--primary);
+    }
+
+    /* GLOBAL LAYOUT */
+    section {
+        padding: 100px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+    }
+
+    h2 {
+        font-family: var(--font-head);
+        font-size: 40px;
+        color: var(--primary);
+        text-align: center;
+        margin-bottom: 60px;
+        text-transform: uppercase;
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    h2::after {
+        content: '';
+        display: block;
+        width: 60%;
+        height: 2px;
+        background: var(--accent);
+        margin: 10px auto 0;
+        box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* 1. HERO SECTION */
+    .hero { text-align: center; height: 100vh; }
+    
+    .profile-img-container {
+        width: 180px; height: 180px; margin: 0 auto 30px; position: relative;
+    }
+    .profile-img {
+        width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+        border: 3px solid var(--primary); z-index: 2; position: relative;
+    }
+    .spin-circle {
+        position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
+        border-radius: 50%; border: 2px dashed var(--accent);
+        animation: spin 10s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    .hero h1 {
+        font-family: var(--font-head); font-size: 60px;
+        background: linear-gradient(to bottom, #fff, #888);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+    }
+    .hero .role { font-size: 24px; color: var(--primary); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; }
+    
+    .btn-gold {
+        padding: 12px 35px; background: transparent; border: 2px solid var(--primary);
+        color: var(--primary); font-size: 18px; font-weight: bold; text-decoration: none;
+        text-transform: uppercase; transition: 0.4s; display: inline-block;
+    }
+    .btn-gold:hover { background: var(--primary); color: #000; box-shadow: 0 0 30px var(--primary); }
+
+    /* 2. ABOUT */
+    .about-box {
+        background: var(--card-bg); padding: 40px; border-left: 5px solid var(--primary);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-size: 20px; line-height: 1.8;
+    }
+
+    /* 3. SKILLS */
+    .skill-bar { margin-bottom: 25px; }
+    .skill-info { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: bold; }
+    .progress-line { height: 8px; width: 100%; background: #222; border-radius: 10px; }
+    .progress-line span {
+        display: block; height: 100%; background: var(--primary); border-radius: 10px;
+        box-shadow: 0 0 10px var(--primary);
+    }
+
+    /* 4. SERVICES (3D FLIP WITH MORE CONTENT) */
+    .flip-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
+    .flip-card { width: 320px; height: 380px; perspective: 1000px; } /* Height increased slightly */
+    
+    .flip-card-inner {
+        position: relative; width: 100%; height: 100%; text-align: center;
+        transition: transform 0.8s; transform-style: preserve-3d;
+    }
+    .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+    
+    .flip-card-front, .flip-card-back {
+        position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        border: 1px solid rgba(255,255,255,0.1); padding: 20px; box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    
+    .flip-card-front { background: #111; }
+    .flip-card-back { background: var(--primary); color: black; transform: rotateY(180deg); }
+    
+    .icon-large { font-size: 50px; margin-bottom: 15px; color: var(--primary); }
+    
+    /* New Styles for Front Card Content */
+    .service-title { font-size: 24px; font-weight: bold; margin-bottom: 5px; color: #fff; }
+    .service-sub { font-size: 14px; color: var(--accent); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+    .tech-stack { 
+        display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; 
+    }
+    .tech-tag {
+        font-size: 12px; background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 20px; color: #ccc; border: 1px solid #333;
+    }
+    .hover-hint { font-size: 12px; color: #666; animation: blink 2s infinite; margin-top: 10px; }
+    @keyframes blink { 50% { opacity: 0.3; } }
+
+    /* 5. PROJECTS */
+    .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .project-item { position: relative; overflow: hidden; height: 250px; border: 1px solid #333; }
+    .project-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+    .project-overlay {
+        position: absolute; bottom: -100%; left: 0; width: 100%; height: 100%;
+        background: rgba(255, 215, 0, 0.9); display: flex; flex-direction: column;
+        justify-content: center; align-items: center; transition: 0.5s; color: black;
+    }
+    .project-item:hover .project-overlay { bottom: 0; }
+    .project-item:hover img { transform: scale(1.1); }
+
+    /* 6. WORKFLOW PROTOCOL */
+    .workflow-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; text-align: center; }
+    .workflow-step {
+        flex: 1; min-width: 200px; background: var(--card-bg); padding: 30px 20px;
+        border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; transition: 0.3s; position: relative;
+    }
+    .workflow-step:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
+    .step-number { font-size: 50px; font-weight: bold; color: rgba(255, 255, 255, 0.1); position: absolute; top: 10px; right: 20px; }
+    .step-icon { font-size: 40px; color: var(--primary); margin-bottom: 20px; }
+    .workflow-step h3 { font-size: 22px; margin-bottom: 10px; color: #fff; }
+    .workflow-step p { color: #aaa; font-size: 16px; }
+
+    /* 7. REVIEWS */
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+    .review-card {
+        background: linear-gradient(145deg, #111, #1a1a1a); padding: 30px; border-radius: 20px;
+        border-top: 2px solid var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.5); position: relative; transition: 0.3s;
+    }
+    .review-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255, 215, 0, 0.15); }
+    .stars { color: var(--primary); font-size: 18px; margin-bottom: 15px; }
+    .review-text { font-style: italic; color: #ddd; margin-bottom: 25px; line-height: 1.6; }
+    .client-profile { display: flex; align-items: center; gap: 15px; }
+    .client-img { width: 50px; height: 50px; border-radius: 50%; background: #333; object-fit: cover; }
+    .client-info h4 { color: #fff; font-size: 18px; font-weight: bold; margin-bottom: 2px; }
+    .client-info span { color: var(--accent); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* 8. CONTACT */
+    .contact-wrapper { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    input, textarea {
+        width: 100%; max-width: 500px; background: transparent; border: 1px solid #444;
+        padding: 15px; color: white; font-family: var(--font-body); font-size: 16px;
+    }
+    input:focus, textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 15px rgba(255, 215, 0, 0.2); }
+
+    footer { padding: 30px; text-align: center; border-top: 1px solid #222; color: #666; font-size: 14px; }
+
+    @media (max-width: 768px) {
+        nav { width: 95%; padding: 10px; }
+        .nav-links { display: none; }
+        .hero h1 { font-size: 40px; }
+        .workflow-container { flex-direction: column; }
+    }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<nav>
+    <div class="logo">BANASHREE</div>
+    <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#projects">Work</a>
+        <a href="#workflow">Process</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="profile-img-container">
+        <div class="spin-circle"></div>
+        <img src="https://i.ibb.co/qLtZ1rCq/IMG-20260219-162431.png" alt="Profile" class="profile-img">
+    </div>
+    <h1>Banashree Dutta</h1>
+    <div class="role">Architect of the Future Web</div>
+    <div>
+        <a href="#contact" class="btn-gold">Hire Me</a>
+        <a href="#projects" class="btn-gold" style="border-color: #fff; color: #fff; margin-left: 15px;">My Work</a>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+    <h2>Mission Brief</h2>
+    <div class="about-box">
+        <p>I transform complex problems into elegant digital solutions. Specializing in high-performance web applications and mobile ecosystems, I ensure that every line of code adds value to your business growth.</p>
+    </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+    <h2>System Core</h2>
+    <div style="max-width: 800px; width: 100%; margin: 0 auto;">
+        <div class="skill-bar">
+            <div class="skill-info"><span>App Development (Flutter/React Native)</span><span>95%</span></div>
+            <div class="progress-line"><span style="width: 95%;"></span></div>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-info"><span>Web Development (MERN Stack)</span><span>90%</span></div>
+            <div class="progress-line"><span style="width: 90%;"></span></div>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-info"><span>Backend Security</span><span>85%</span></div>
+            <div class="progress-line"><span style="width: 85%;"></span></div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES (FILLED CARDS) -->
+<section id="services">
+    <h2>Capabilities</h2>
+    <div class="flip-container">
+        
+        <!-- Service 1: App Dev -->
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="icon-large">📱</div>
+                    <h3 class="service-title">App Development</h3>
+                    <p class="service-sub">Android & iOS</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">React Native</span>
+                        <span class="tech-tag">Firebase</span>
+                    </div>
+                    <p class="hover-hint">Hover for Details >></p>
+                </div>
+                <div class="flip-card-back">
+                    <h3>Mobile Solutions</h3>
+                    <p>I build cross-platform mobile apps that provide native performance and smooth animations.</p>
+                    <br>
+                    <p style="font-size: 14px; border-top: 1px solid #000; padding-top: 10px;">✅ Play Store Publish<br>✅ Real-time Database<br>✅ Push Notifications</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service 2: Web Dev -->
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="icon-large">💻</div>
+                    <h3 class="service-title">Web Development</h3>
+                    <p class="service-sub">MERN Stack</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">React.js</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">MongoDB</span>
+                    </div>
+                    <p class="hover-hint">Hover for Details >></p>
+                </div>
+                <div class="flip-card-back">
+                    <h3>Web Architecture</h3>
+                    <p>Responsive, SEO-friendly websites designed to convert visitors into customers.</p>
+                    <br>
+                    <p style="font-size: 14px; border-top: 1px solid #000; padding-top: 10px;">✅ Fast Loading<br>✅ Secure API<br>✅ Admin Panels</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service 3: UI/UX -->
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="icon-large">🎨</div>
+                    <h3 class="service-title">UI/UX Design</h3>
+                    <p class="service-sub">Visual & Flow</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Figma</span>
+                        <span class="tech-tag">Adobe XD</span>
+                        <span class="tech-tag">Prototyping</span>
+                    </div>
+                    <p class="hover-hint">Hover for Details >></p>
+                </div>
+                <div class="flip-card-back">
+                    <h3>Future UI</h3>
+                    <p>Creating intuitive and visually stunning interfaces that enhance user engagement.</p>
+                    <br>
+                    <p style="font-size: 14px; border-top: 1px solid #000; padding-top: 10px;">✅ Modern Aesthetics<br>✅ User Research<br>✅ Wireframing</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+    <h2>Deployed Units</h2>
+    <div class="project-grid">
+        <div class="project-item">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=500&q=80" alt="Project 1">
+            <div class="project-overlay">
+                <h3>Lead Gen App</h3>
+                <p>Automated Business Solution</p>
+            </div>
+        </div>
+        <div class="project-item">
+            <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&w=500&q=80" alt="Project 2">
+            <div class="project-overlay">
+                <h3>Secure Emailer</h3>
+                <p>Custom API Mailing System</p>
+            </div>
+        </div>
+        <div class="project-item">
+            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=500&q=80" alt="Project 3">
+            <div class="project-overlay">
+                <h3>Portfolio 3.0</h3>
+                <p>Next-Gen Personal Site</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WORKFLOW -->
+<section id="workflow">
+    <h2>Workflow Protocol</h2>
+    <div class="workflow-container">
+        <div class="workflow-step">
+            <div class="step-number">01</div>
+            <div class="step-icon">🔍</div>
+            <h3>Discovery</h3>
+            <p>Analyzing requirements, understanding business goals, and planning the architecture.</p>
+        </div>
+        <div class="workflow-step">
+            <div class="step-number">02</div>
+            <div class="step-icon">⚙️</div>
+            <h3>Development</h3>
+            <p>Writing clean, efficient code using modern frameworks and ensuring robust security.</p>
+        </div>
+        <div class="workflow-step">
+            <div class="step-number">03</div>
+            <div class="step-icon">🚀</div>
+            <h3>Deployment</h3>
+            <p>Testing, launching on live servers, and providing post-launch support.</p>
+        </div>
+    </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+    <h2>Client Transmissions</h2>
+    <div class="reviews-grid">
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Banashree is an absolute professional. She took our messy concept and turned it into a sleek, high-performing app. The attention to detail is unmatched in the industry."</p>
+            <div class="client-profile">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="client-img">
+                <div class="client-info">
+                    <h4>James Anderson</h4>
+                    <span>CEO, TechNova</span>
+                </div>
+            </div>
+        </div>
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"We needed a complex lead generation system, and Banashree delivered it 3 days ahead of schedule. Her code is clean, and the system runs flawlessly. Highly recommended!"</p>
+            <div class="client-profile">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" class="client-img">
+                <div class="client-info">
+                    <h4>Sarah Williams</h4>
+                    <span>Founder, StyleHub</span>
+                </div>
+            </div>
+        </div>
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"The best developer I have worked with on Fiverr. Great communication, excellent technical skills, and a true problem solver. Will hire again for sure."</p>
+            <div class="client-profile">
+                <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Client" class="client-img">
+                <div class="client-info">
+                    <h4>David Miller</h4>
+                    <span>Manager, GreenCorp</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATS -->
+<section id="stats" style="min-height: 50vh;">
+    <h2>Data Metrics</h2>
+    <div style="display: flex; justify-content: space-around; width: 100%; text-align: center;">
+        <div>
+            <h3 style="font-size: 50px; color: var(--primary);">50+</h3>
+            <p>Projects</p>
+        </div>
+        <div>
+            <h3 style="font-size: 50px; color: var(--primary);">100%</h3>
+            <p>Success Rate</p>
+        </div>
+        <div>
+            <h3 style="font-size: 50px; color: var(--primary);">4+</h3>
+            <p>Years Exp</p>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+    <h2>Establish Uplink</h2>
+    <div class="contact-wrapper">
+        <input type="text" placeholder="Identity (Name)">
+        <input type="email" placeholder="Frequency (Email)">
+        <textarea rows="5" placeholder="Transmission (Message)"></textarea>
+        
+        <div style="margin-top: 20px;">
+            <a href="mailto:banashreedutta05@gmail.com" class="btn-gold">Send Data</a>
+        </div>
+        
+        <div style="margin-top: 30px; font-size: 24px;">
+            <a href="https://wa.me/918515007442" style="color: #25D366; margin: 0 10px;"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:banashreedutta05@gmail.com" style="color: #EA4335; margin: 0 10px;"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>System Online © 2026 Banashree Dutta | End of Line.</p>
+</footer>
+
+<script>
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let stars = [];
+    const numStars = 200;
+    const speed = 2;
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    function initStars() {
+        stars = [];
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: (Math.random() - 0.5) * width,
+                y: (Math.random() - 0.5) * height,
+                z: Math.random() * width
+            });
+        }
+    }
+
+    function draw() {
+        ctx.fillStyle = "#050505";
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = "#ffd700";
+
+        for (let star of stars) {
+            star.z -= speed;
+            if (star.z <= 0) {
+                star.x = (Math.random() - 0.5) * width;
+                star.y = (Math.random() - 0.5) * height;
+                star.z = width;
+            }
+
+            const sx = (star.x / star.z) * 100 + width / 2;
+            const sy = (star.y / star.z) * 100 + height / 2;
+            const radius = (1 - star.z / width) * 3;
+
+            if (sx > 0 && sx < width && sy > 0 && sy < height) {
+                ctx.beginPath();
+                ctx.arc(sx, sy, radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    initStars();
+    draw();
+</script>
+
+</body>
+</html>
